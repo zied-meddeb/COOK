@@ -1,10 +1,15 @@
 export 'splash_screen.dart';
 export 'login_screen.dart';
+export 'register_screen.dart';
 export 'client_home_screen.dart';
 export 'explore_screen.dart';
+export 'search_screen.dart';
+export 'categories_screen.dart';
 export 'dish_details_screen.dart';
 export 'cook_profile_screen.dart';
 export 'cart_screen.dart';
 export 'order_tracking_screen.dart';
+export 'orders_screen.dart';
+export 'user_profile_screen.dart';
 export 'cook_dashboard_screen.dart';
 export 'add_dish_screen.dart';

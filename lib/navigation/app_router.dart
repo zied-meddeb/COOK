@@ -17,7 +17,13 @@ class AppRouter {
           builder: (_) => const LoginScreen(),
           settings: settings,
         );
-        
+
+      case '/register':
+        return MaterialPageRoute(
+          builder: (_) => const RegisterScreen(),
+          settings: settings,
+        );
+
       case '/client':
         return MaterialPageRoute(
           builder: (_) => const ClientNavigator(),
@@ -35,7 +41,26 @@ class AppRouter {
           builder: (_) => const ExploreScreen(),
           settings: settings,
         );
-        
+
+      case '/search':
+        return MaterialPageRoute(
+          builder: (_) => const SearchScreen(),
+          settings: settings,
+        );
+
+      case '/categories':
+        return MaterialPageRoute(
+          builder: (_) => const CategoriesScreen(),
+          settings: settings,
+        );
+
+      case '/category':
+        final categoryId = settings.arguments as String? ?? 'traditional';
+        return MaterialPageRoute(
+          builder: (_) => CategoryDetailScreen(categoryId: categoryId),
+          settings: settings,
+        );
+
       case '/dish-details':
         final dishId = settings.arguments as String? ?? '1';
         return MaterialPageRoute(
@@ -61,7 +86,25 @@ class AppRouter {
           builder: (_) => const OrderTrackingScreen(),
           settings: settings,
         );
-        
+
+      case '/orders':
+        return MaterialPageRoute(
+          builder: (_) => const OrdersScreen(),
+          settings: settings,
+        );
+
+      case '/order-history':
+        return MaterialPageRoute(
+          builder: (_) => const OrdersScreen(),
+          settings: settings,
+        );
+
+      case '/profile':
+        return MaterialPageRoute(
+          builder: (_) => const UserProfileScreen(),
+          settings: settings,
+        );
+
       case '/add-dish':
         return MaterialPageRoute(
           builder: (_) => const AddDishScreen(),

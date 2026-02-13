@@ -15,6 +15,14 @@ class Cook {
   final String prepTime;
   final bool verified;
   final bool topSeller;
+  final String location;
+  final String address;
+  final List<String> specialties;
+  final bool isAvailable;
+  final bool acceptsDelivery;
+  final bool acceptsPickup;
+  final double minimumOrder;
+  final String phone;
 
   const Cook({
     required this.id,
@@ -33,6 +41,14 @@ class Cook {
     required this.prepTime,
     required this.verified,
     required this.topSeller,
+    this.location = '',
+    this.address = '',
+    this.specialties = const [],
+    this.isAvailable = true,
+    this.acceptsDelivery = true,
+    this.acceptsPickup = true,
+    this.minimumOrder = 0,
+    this.phone = '',
   });
 
   Cook copyWith({
@@ -52,6 +68,14 @@ class Cook {
     String? prepTime,
     bool? verified,
     bool? topSeller,
+    String? location,
+    String? address,
+    List<String>? specialties,
+    bool? isAvailable,
+    bool? acceptsDelivery,
+    bool? acceptsPickup,
+    double? minimumOrder,
+    String? phone,
   }) {
     return Cook(
       id: id ?? this.id,
@@ -70,6 +94,14 @@ class Cook {
       prepTime: prepTime ?? this.prepTime,
       verified: verified ?? this.verified,
       topSeller: topSeller ?? this.topSeller,
+      location: location ?? this.location,
+      address: address ?? this.address,
+      specialties: specialties ?? this.specialties,
+      isAvailable: isAvailable ?? this.isAvailable,
+      acceptsDelivery: acceptsDelivery ?? this.acceptsDelivery,
+      acceptsPickup: acceptsPickup ?? this.acceptsPickup,
+      minimumOrder: minimumOrder ?? this.minimumOrder,
+      phone: phone ?? this.phone,
     );
   }
 }

@@ -19,6 +19,12 @@ class AppTypography {
     height: 1.33,
   );
 
+  static const TextStyle h4 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+  );
+
   static const TextStyle bodyLg = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
@@ -35,6 +41,12 @@ class AppTypography {
     fontSize: 12,
     fontWeight: FontWeight.w400,
     height: 1.33,
+  );
+
+  static const TextStyle bodyXs = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
   );
 
   static const TextStyle label = TextStyle(

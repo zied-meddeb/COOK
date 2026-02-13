@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: AppSpacing.md),
               AppButton(
                 label: "S'inscrire",
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).pushNamed('/register'),
                 variant: AppButtonVariant.secondary,
                 size: AppButtonSize.lg,
                 fullWidth: true,

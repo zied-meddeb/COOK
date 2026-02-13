@@ -5,11 +5,11 @@ import 'providers/providers.dart';
 import 'navigation/navigation.dart';
 
 void main() {
-  runApp(const CuisinVoisinApp());
+  runApp(const HomeChefDeliveryApp());
 }
 
-class CuisinVoisinApp extends StatelessWidget {
-  const CuisinVoisinApp({super.key});
+class HomeChefDeliveryApp extends StatelessWidget {
+  const HomeChefDeliveryApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CuisinVoisinApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
-            title: "Cuisin'Voisin",
+            title: "HomeChef Delivery",
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               useMaterial3: true,

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Primary
-  static const Color primary = Color(0xFFFA6C38);
-  static const Color primaryHover = Color(0xFFE85A24);
-  static const Color primaryLight = Color(0xFFFDE4D5);
+  // Primary - Orange chaud HomeChef
+  static const Color primary = Color(0xFFFF7A00);
+  static const Color primaryHover = Color(0xFFE86E00);
+  static const Color primaryLight = Color(0xFFFFF3E6);
+  static const Color primaryDark = Color(0xFFCC6200);
+
+  // Secondary - Vert doux
+  static const Color secondary = Color(0xFF2ECC71);
+  static const Color secondaryLight = Color(0xFFE8F8F0);
+  static const Color secondaryDark = Color(0xFF27AE60);
 
   // Status
-  static const Color success = Color(0xFF4CAF50);
+  static const Color success = Color(0xFF2ECC71);
   static const Color warning = Color(0xFFFFC107);
-  static const Color error = Color(0xFFF44336);
-  static const Color info = Color(0xFF2196F3);
+  static const Color error = Color(0xFFE74C3C);
+  static const Color info = Color(0xFF3498DB);
 
   // Neutral
   static const Color white = Color(0xFFFFFFFF);

@@ -5,19 +5,31 @@ import '../theme/theme.dart';
 class TextInputField extends StatelessWidget {
   final String? label;
   final String placeholder;
-  final String value;
-  final ValueChanged<String> onChanged;
+  final String? value;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
   final bool multiline;
   final int numberOfLines;
+  final IconData? prefixIcon;
+  final Widget? suffixIcon;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
 
   const TextInputField({
     super.key,
     this.label,
     required this.placeholder,
-    required this.value,
-    required this.onChanged,
+    this.value,
+    this.onChanged,
+    this.controller,
     this.multiline = false,
     this.numberOfLines = 1,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.obscureText = false,
+    this.keyboardType,
+    this.validator,
   });
 
   @override
@@ -37,12 +49,17 @@ class TextInputField extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
         ],
-        TextField(
-          controller: TextEditingController(text: value)
-            ..selection = TextSelection.collapsed(offset: value.length),
+        TextFormField(
+          controller: controller ?? (value != null
+              ? (TextEditingController(text: value)
+                ..selection = TextSelection.collapsed(offset: value!.length))
+              : null),
           onChanged: onChanged,
           maxLines: multiline ? numberOfLines : 1,
           minLines: multiline ? numberOfLines : 1,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          validator: validator,
           style: AppTypography.bodyMd.copyWith(
             color: colors.textPrimary,
           ),
@@ -54,6 +71,10 @@ class TextInputField extends StatelessWidget {
             filled: true,
             fillColor: colors.card,
             contentPadding: const EdgeInsets.all(AppSpacing.md),
+            prefixIcon: prefixIcon != null
+                ? Icon(prefixIcon, color: colors.textSecondary, size: 20)
+                : null,
+            suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppBorderRadius.lg),
               borderSide: BorderSide(color: colors.border),
@@ -64,11 +85,18 @@ class TextInputField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppBorderRadius.lg),
-              borderSide: const BorderSide(color: AppColors.primary),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppBorderRadius.lg),
+              borderSide: const BorderSide(color: AppColors.error),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppBorderRadius.lg),
+              borderSide: const BorderSide(color: AppColors.error, width: 2),
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
       ],
     );
   }
