@@ -462,33 +462,42 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       return _buildLoadingShimmer(colors);
     }
 
-    return SizedBox(
-      height: 260,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        itemCount: _popularDishes.length,
-        itemBuilder: (context, index) {
-          final dish = _popularDishes[index];
-          return Container(
-            width: 180,
-            margin: const EdgeInsets.only(right: AppSpacing.md),
-            child: DishCard(
-              id: dish.id,
-              name: dish.name,
-              image: dish.image,
-              price: dish.price,
-              rating: dish.rating,
-              distance: dish.distance.toString(),
-              available: dish.available,
-              onPress: () => Navigator.of(context).pushNamed(
-                '/dish-details',
-                arguments: dish.id,
-              ),
-            ),
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Responsive card dimensions
+        final screenWidth = constraints.maxWidth;
+        final cardWidth = screenWidth < 400 ? 150.0 : 180.0;
+        final cardHeight = screenWidth < 400 ? 220.0 : 260.0;
+
+        return SizedBox(
+          height: cardHeight,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            itemCount: _popularDishes.length,
+            itemBuilder: (context, index) {
+              final dish = _popularDishes[index];
+              return Container(
+                width: cardWidth,
+                margin: const EdgeInsets.only(right: AppSpacing.md),
+                child: DishCard(
+                  id: dish.id,
+                  name: dish.name,
+                  image: dish.image,
+                  price: dish.price,
+                  rating: dish.rating,
+                  distance: dish.distance.toString(),
+                  available: dish.available,
+                  onPress: () => Navigator.of(context).pushNamed(
+                    '/dish-details',
+                    arguments: dish.id,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -712,33 +721,42 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       return _buildLoadingShimmer(colors);
     }
 
-    return SizedBox(
-      height: 260,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        itemCount: _recentDishes.length,
-        itemBuilder: (context, index) {
-          final dish = _recentDishes[index];
-          return Container(
-            width: 180,
-            margin: const EdgeInsets.only(right: AppSpacing.md),
-            child: DishCard(
-              id: dish.id,
-              name: dish.name,
-              image: dish.image,
-              price: dish.price,
-              rating: dish.rating,
-              distance: dish.distance.toString(),
-              available: dish.available,
-              onPress: () => Navigator.of(context).pushNamed(
-                '/dish-details',
-                arguments: dish.id,
-              ),
-            ),
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Responsive card dimensions
+        final screenWidth = constraints.maxWidth;
+        final cardWidth = screenWidth < 400 ? 150.0 : 180.0;
+        final cardHeight = screenWidth < 400 ? 220.0 : 260.0;
+
+        return SizedBox(
+          height: cardHeight,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            itemCount: _recentDishes.length,
+            itemBuilder: (context, index) {
+              final dish = _recentDishes[index];
+              return Container(
+                width: cardWidth,
+                margin: const EdgeInsets.only(right: AppSpacing.md),
+                child: DishCard(
+                  id: dish.id,
+                  name: dish.name,
+                  image: dish.image,
+                  price: dish.price,
+                  rating: dish.rating,
+                  distance: dish.distance.toString(),
+                  available: dish.available,
+                  onPress: () => Navigator.of(context).pushNamed(
+                    '/dish-details',
+                    arguments: dish.id,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 

@@ -22,29 +22,37 @@ class ExploreScreen extends StatelessWidget {
           style: AppTypography.h2.copyWith(color: colors.textPrimary),
         ),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: AppSpacing.lg,
-          mainAxisSpacing: AppSpacing.lg,
-          childAspectRatio: 0.65,
-        ),
-        itemCount: mockDishes.length,
-        itemBuilder: (context, index) {
-          final dish = mockDishes[index];
-          return DishCard(
-            id: dish.id,
-            name: dish.name,
-            image: dish.image,
-            price: dish.price,
-            rating: dish.rating,
-            distance: dish.distance.toString(),
-            available: dish.available,
-            onPress: () => Navigator.of(context).pushNamed(
-              '/dish-details',
-              arguments: dish.id,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate responsive grid based on screen width
+          final screenWidth = constraints.maxWidth;
+          final crossAxisCount = screenWidth < 400 ? 2 : (screenWidth / 200).floor().clamp(2, 4);
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: AppSpacing.md,
+              mainAxisSpacing: AppSpacing.md,
+              childAspectRatio: 0.7,
             ),
+            itemCount: mockDishes.length,
+            itemBuilder: (context, index) {
+              final dish = mockDishes[index];
+              return DishCard(
+                id: dish.id,
+                name: dish.name,
+                image: dish.image,
+                price: dish.price,
+                rating: dish.rating,
+                distance: dish.distance.toString(),
+                available: dish.available,
+                onPress: () => Navigator.of(context).pushNamed(
+                  '/dish-details',
+                  arguments: dish.id,
+                ),
+              );
+            },
           );
         },
       ),

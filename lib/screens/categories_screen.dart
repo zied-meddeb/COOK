@@ -300,35 +300,42 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     child: CircularProgressIndicator(color: AppColors.primary),
                   ),
                 )
-              : SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  sliver: SliverGrid(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: AppSpacing.md,
-                      mainAxisSpacing: AppSpacing.md,
-                      childAspectRatio: 0.7,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final dish = sortedDishes[index];
-                        return DishCard(
-                          id: dish.id,
-                          name: dish.name,
-                          image: dish.image,
-                          price: dish.price,
-                          rating: dish.rating,
-                          distance: dish.distance.toString(),
-                          available: dish.available,
-                          onPress: () => Navigator.of(context).pushNamed(
-                            '/dish-details',
-                            arguments: dish.id,
-                          ),
-                        );
-                      },
-                      childCount: sortedDishes.length,
-                    ),
-                  ),
+              : SliverLayoutBuilder(
+                  builder: (context, constraints) {
+                    final screenWidth = constraints.crossAxisExtent;
+                    final crossAxisCount = screenWidth < 400 ? 2 : (screenWidth / 200).floor().clamp(2, 4);
+
+                    return SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: AppSpacing.md,
+                          mainAxisSpacing: AppSpacing.md,
+                          childAspectRatio: 0.7,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final dish = sortedDishes[index];
+                            return DishCard(
+                              id: dish.id,
+                              name: dish.name,
+                              image: dish.image,
+                              price: dish.price,
+                              rating: dish.rating,
+                              distance: dish.distance.toString(),
+                              available: dish.available,
+                              onPress: () => Navigator.of(context).pushNamed(
+                                '/dish-details',
+                                arguments: dish.id,
+                              ),
+                            );
+                          },
+                          childCount: sortedDishes.length,
+                        ),
+                      ),
+                    );
+                  },
                 ),
 
           const SliverToBoxAdapter(
