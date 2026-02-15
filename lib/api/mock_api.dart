@@ -149,7 +149,7 @@ final List<Dish> mockDishes = [
     rating: 4.5,
     reviewCount: 76,
     distance: 0.7,
-    image: 'https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?w=800',
+    image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=800',
     cookId: '5',
     cookName: 'Ahmed K.',
     cookAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',

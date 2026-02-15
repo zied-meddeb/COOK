@@ -477,9 +477,22 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundImage: CachedNetworkImageProvider(cook.avatar),
+                          CachedNetworkImage(
+                            imageUrl: cook.avatar,
+                            imageBuilder: (context, imageProvider) => CircleAvatar(
+                              radius: 28,
+                              backgroundImage: imageProvider,
+                            ),
+                            placeholder: (context, url) => CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.grey[300],
+                              child: const Icon(Icons.person, color: Colors.grey),
+                            ),
+                            errorWidget: (context, url, error) => CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.grey[300],
+                              child: const Icon(Icons.person, color: Colors.grey),
+                            ),
                           ),
                           const SizedBox(width: AppSpacing.md),
                           Expanded(
@@ -576,6 +589,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[300],
+                ),
+                errorWidget: (context, url, error) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.fastfood, color: Colors.grey),
+                ),
               ),
             ),
             const SizedBox(width: AppSpacing.md),

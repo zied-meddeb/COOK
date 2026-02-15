@@ -71,21 +71,44 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     // Profile Card
                     Row(
                       children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: AppColors.primaryLight,
-                          backgroundImage: user?.avatar != null
-                              ? CachedNetworkImageProvider(user!.avatar!)
-                              : null,
-                          child: user?.avatar == null
-                              ? Text(
+                        user?.avatar != null
+                            ? CachedNetworkImage(
+                                imageUrl: user!.avatar!,
+                                imageBuilder: (context, imageProvider) => CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage: imageProvider,
+                                ),
+                                placeholder: (context, url) => CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: AppColors.primaryLight,
+                                  child: Text(
+                                    user.name.substring(0, 1).toUpperCase(),
+                                    style: AppTypography.h1.copyWith(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: AppColors.primaryLight,
+                                  child: Text(
+                                    user.name.substring(0, 1).toUpperCase(),
+                                    style: AppTypography.h1.copyWith(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : CircleAvatar(
+                                radius: 40,
+                                backgroundColor: AppColors.primaryLight,
+                                child: Text(
                                   user?.name.substring(0, 1).toUpperCase() ?? 'U',
                                   style: AppTypography.h1.copyWith(
                                     color: AppColors.primary,
                                   ),
-                                )
-                              : null,
-                        ),
+                                ),
+                              ),
                         const SizedBox(width: AppSpacing.lg),
                         Expanded(
                           child: Column(
@@ -145,6 +168,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ],
                 ),
               ),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              // User Stats Section
+              _buildUserStatsSection(colors),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              // Role Switch Section
+              _buildRoleSwitchSection(colors, appProvider),
 
               const SizedBox(height: AppSpacing.lg),
 
@@ -346,6 +379,251 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ],
           );
         }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildUserStatsSection(AppThemeColors colors) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppColors.primary.withValues(alpha: 0.1),
+              AppColors.secondary.withValues(alpha: 0.1),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+          border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Mes statistiques',
+              style: AppTypography.h4.copyWith(
+                color: colors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatItem(
+                    '🛒',
+                    '24',
+                    'Commandes',
+                    colors,
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 50,
+                  color: colors.border,
+                ),
+                Expanded(
+                  child: _buildStatItem(
+                    '⭐',
+                    '4.8',
+                    'Note moyenne',
+                    colors,
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 50,
+                  color: colors.border,
+                ),
+                Expanded(
+                  child: _buildStatItem(
+                    '❤️',
+                    '12',
+                    'Favoris',
+                    colors,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatItem(
+    String emoji,
+    String value,
+    String label,
+    AppThemeColors colors,
+  ) {
+    return Column(
+      children: [
+        Text(emoji, style: const TextStyle(fontSize: 24)),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          value,
+          style: AppTypography.h3.copyWith(
+            color: colors.textPrimary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Text(
+          label,
+          style: AppTypography.bodyXs.copyWith(
+            color: colors.textSecondary,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRoleSwitchSection(AppThemeColors colors, AppProvider appProvider) {
+    final user = appProvider.user;
+    final isClient = user?.role == UserRole.client;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: colors.card,
+          borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+          border: Border.all(color: colors.border),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppBorderRadius.md),
+                  ),
+                  child: const Text('🔄', style: TextStyle(fontSize: 20)),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Changer de mode',
+                        style: AppTypography.bodyLg.copyWith(
+                          color: colors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        isClient
+                            ? 'Devenez chef et vendez vos plats'
+                            : 'Passez en mode client',
+                        style: AppTypography.bodySm.copyWith(
+                          color: colors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            // Role Toggle
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: colors.background,
+                borderRadius: BorderRadius.circular(AppBorderRadius.lg),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (user != null && user.role != UserRole.client) {
+                          appProvider.setUser(user.copyWith(role: UserRole.client));
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/client',
+                            (route) => false,
+                          );
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                        decoration: BoxDecoration(
+                          color: isClient ? AppColors.primary : Colors.transparent,
+                          borderRadius: BorderRadius.circular(AppBorderRadius.md),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '🍽️',
+                              style: TextStyle(fontSize: isClient ? 18 : 16),
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                            Text(
+                              'Client',
+                              style: AppTypography.bodyMd.copyWith(
+                                color: isClient ? Colors.white : colors.textSecondary,
+                                fontWeight: isClient ? FontWeight.w700 : FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (user != null && user.role != UserRole.cook) {
+                          appProvider.setUser(user.copyWith(role: UserRole.cook));
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/cook',
+                            (route) => false,
+                          );
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                        decoration: BoxDecoration(
+                          color: !isClient ? AppColors.secondary : Colors.transparent,
+                          borderRadius: BorderRadius.circular(AppBorderRadius.md),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '👨‍🍳',
+                              style: TextStyle(fontSize: !isClient ? 18 : 16),
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                            Text(
+                              'Chef',
+                              style: AppTypography.bodyMd.copyWith(
+                                color: !isClient ? Colors.white : colors.textSecondary,
+                                fontWeight: !isClient ? FontWeight.w700 : FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

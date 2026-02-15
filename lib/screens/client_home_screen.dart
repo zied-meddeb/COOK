@@ -14,17 +14,68 @@ class ClientHomeScreen extends StatefulWidget {
   State<ClientHomeScreen> createState() => _ClientHomeScreenState();
 }
 
-class _ClientHomeScreenState extends State<ClientHomeScreen> {
+class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerProviderStateMixin {
   List<Dish> _popularDishes = [];
   List<Dish> _recentDishes = [];
   List<Cook> _popularCooks = [];
   List<Cook> _nearbyCooks = [];
   bool _isLoading = true;
+  late AnimationController _bannerController;
+  late Animation<double> _bannerAnimation;
+  int _currentBannerIndex = 0;
+
+  final List<Map<String, dynamic>> _banners = [
+    {
+      'title': '🍽️ Découvrez les plats maison',
+      'subtitle': 'Cuisinés avec amour par nos chefs locaux',
+      'gradient': [const Color(0xFFFF7A00), const Color(0xFFFF5500)],
+    },
+    {
+      'title': '🚀 Livraison express',
+      'subtitle': 'Recevez votre repas en moins de 30 min',
+      'gradient': [const Color(0xFF2ECC71), const Color(0xFF27AE60)],
+    },
+    {
+      'title': '⭐ Nouveaux chefs cette semaine',
+      'subtitle': '-20% sur votre première commande',
+      'gradient': [const Color(0xFF9B59B6), const Color(0xFF8E44AD)],
+    },
+  ];
 
   @override
   void initState() {
     super.initState();
+    _bannerController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _bannerAnimation = CurvedAnimation(
+      parent: _bannerController,
+      curve: Curves.easeInOut,
+    );
+    _bannerController.forward();
+    _startBannerTimer();
     _loadData();
+  }
+
+  void _startBannerTimer() {
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        _bannerController.reverse().then((_) {
+          setState(() {
+            _currentBannerIndex = (_currentBannerIndex + 1) % _banners.length;
+          });
+          _bannerController.forward();
+          _startBannerTimer();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _bannerController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -65,6 +116,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
                 // Search Bar
                 _buildSearchBar(colors),
+                const SizedBox(height: AppSpacing.lg),
+
+                // Hero Banner
+                _buildHeroBanner(colors),
                 const SizedBox(height: AppSpacing.lg),
 
                 // Active Order Banner (if any)
@@ -239,6 +294,109 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroBanner(AppThemeColors colors) {
+    final banner = _banners[_currentBannerIndex];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: FadeTransition(
+        opacity: _bannerAnimation,
+        child: GestureDetector(
+          onTap: () => Navigator.of(context).pushNamed('/explore'),
+          child: Container(
+            height: 120,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: banner['gradient'] as List<Color>,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+              boxShadow: [
+                BoxShadow(
+                  color: (banner['gradient'] as List<Color>)[0].withValues(alpha: 0.4),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          banner['title'] as String,
+                          style: AppTypography.bodyLg.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: Text(
+                          banner['subtitle'] as String,
+                          style: AppTypography.bodySm.copyWith(
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
+                          vertical: AppSpacing.xs,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+                        ),
+                        child: Text(
+                          'Découvrir →',
+                          style: AppTypography.bodyXs.copyWith(
+                            color: (banner['gradient'] as List<Color>)[0],
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                // Banner dots indicator (vertical)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(_banners.length, (index) {
+                    return Container(
+                      width: 8,
+                      height: index == _currentBannerIndex ? 20 : 8,
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(
+                          alpha: index == _currentBannerIndex ? 1.0 : 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -530,9 +688,22 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 35,
-                    backgroundImage: CachedNetworkImageProvider(cook.avatar),
+                  CachedNetworkImage(
+                    imageUrl: cook.avatar,
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      radius: 35,
+                      backgroundImage: imageProvider,
+                    ),
+                    placeholder: (context, url) => CircleAvatar(
+                      radius: 35,
+                      backgroundColor: Colors.grey[300],
+                      child: const Icon(Icons.person, color: Colors.grey),
+                    ),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      radius: 35,
+                      backgroundColor: Colors.grey[300],
+                      child: const Icon(Icons.person, color: Colors.grey),
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
@@ -648,9 +819,22 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: CachedNetworkImageProvider(cook.avatar),
+                  CachedNetworkImage(
+                    imageUrl: cook.avatar,
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      radius: 25,
+                      backgroundImage: imageProvider,
+                    ),
+                    placeholder: (context, url) => CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.grey[300],
+                      child: const Icon(Icons.person, size: 20, color: Colors.grey),
+                    ),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.grey[300],
+                      child: const Icon(Icons.person, size: 20, color: Colors.grey),
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(

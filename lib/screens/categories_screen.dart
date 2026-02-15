@@ -87,6 +87,10 @@ class _CategoryCard extends StatelessWidget {
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),
               ),
+              errorWidget: (context, url, error) => Container(
+                color: colors.card,
+                child: const Icon(Icons.category, size: 40, color: Colors.grey),
+              ),
             ),
             // Gradient Overlay
             Container(
@@ -230,6 +234,13 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   CachedNetworkImage(
                     imageUrl: category.image,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[300],
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.category, size: 48, color: Colors.grey),
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(

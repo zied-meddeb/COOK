@@ -43,6 +43,19 @@ class CookProfileScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.restaurant, size: 48, color: Colors.grey),
+                    ),
                   ),
                   Positioned(
                     top: 12 + MediaQuery.of(context).padding.top,
@@ -100,6 +113,14 @@ class CookProfileScreen extends StatelessWidget {
                             width: 96,
                             height: 96,
                             fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.person, size: 40, color: Colors.grey),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.person, size: 40, color: Colors.grey),
+                            ),
                           ),
                         ),
                       ),
@@ -295,6 +316,19 @@ class CookProfileScreen extends StatelessWidget {
                               width: double.infinity,
                               height: double.infinity,
                               fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey[300],
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.primary,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.fastfood, size: 40, color: Colors.grey),
+                              ),
                             ),
                             Positioned(
                               bottom: 0,
