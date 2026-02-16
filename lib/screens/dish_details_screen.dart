@@ -18,7 +18,6 @@ class DishDetailsScreen extends StatefulWidget {
 
 class _DishDetailsScreenState extends State<DishDetailsScreen> with SingleTickerProviderStateMixin {
   int _quantity = 1;
-  bool _isFavorite = false;
   bool _isAddingToCart = false;
   late AnimationController _favoriteController;
   late Animation<double> _favoriteAnimation;
@@ -68,9 +67,27 @@ class _DishDetailsScreenState extends State<DishDetailsScreen> with SingleTicker
 
   void _toggleFavorite() {
     HapticFeedback.mediumImpact();
-    setState(() => _isFavorite = !_isFavorite);
-    if (_isFavorite) {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+    final wasFavorite = appProvider.isDishFavorite(dish.id);
+    appProvider.toggleFavoriteDish(dish.id);
+
+    if (!wasFavorite) {
       _favoriteController.forward().then((_) => _favoriteController.reverse());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.favorite, color: Colors.white),
+              const SizedBox(width: 8),
+              Text('${dish.name} ajouté aux favoris'),
+            ],
+          ),
+          backgroundColor: AppColors.primary,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -78,10 +95,12 @@ class _DishDetailsScreenState extends State<DishDetailsScreen> with SingleTicker
     HapticFeedback.heavyImpact();
     setState(() => _isAddingToCart = true);
 
+    // Capture provider before async gap
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+
     // Simulate a small delay for animation
     await Future.delayed(const Duration(milliseconds: 500));
 
-    final appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.addToCart(CartItem(
       id: '${dish.id}-${DateTime.now().millisecondsSinceEpoch}',
       dishId: dish.id,
@@ -94,8 +113,8 @@ class _DishDetailsScreenState extends State<DishDetailsScreen> with SingleTicker
     setState(() => _isAddingToCart = false);
 
     // Show success feedback
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
@@ -114,7 +133,6 @@ class _DishDetailsScreenState extends State<DishDetailsScreen> with SingleTicker
           ),
         ),
       );
-    }
   }
 
   @override
@@ -297,32 +315,37 @@ class _DishDetailsScreenState extends State<DishDetailsScreen> with SingleTicker
                 ),
                 const SizedBox(width: 12),
                 // Favorite button with animation
-                GestureDetector(
-                  onTap: _toggleFavorite,
-                  child: ScaleTransition(
-                    scale: _favoriteAnimation,
-                    child: Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: _isFavorite
-                            ? AppColors.error.withValues(alpha: 0.1)
-                            : colors.card.withValues(alpha: 0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 10,
+                Consumer<AppProvider>(
+                  builder: (context, appProvider, child) {
+                    final isFavorite = appProvider.isDishFavorite(dish.id);
+                    return GestureDetector(
+                      onTap: _toggleFavorite,
+                      child: ScaleTransition(
+                        scale: _favoriteAnimation,
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: isFavorite
+                                ? AppColors.error.withValues(alpha: 0.1)
+                                : colors.card.withValues(alpha: 0.9),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                              ),
+                            ],
                           ),
-                        ],
+                          child: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? AppColors.error : colors.textPrimary,
+                            size: 22,
+                          ),
+                        ),
                       ),
-                      child: Icon(
-                        _isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: _isFavorite ? AppColors.error : colors.textPrimary,
-                        size: 22,
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ],
             ),

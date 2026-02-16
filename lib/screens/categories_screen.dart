@@ -427,7 +427,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
               ),
             ),
             if (isSelected)
-              Icon(Icons.check_circle, color: AppColors.primary, size: 24),
+              const Icon(Icons.check_circle, color: AppColors.primary, size: 24),
           ],
         ),
       ),

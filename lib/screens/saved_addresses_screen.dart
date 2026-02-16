@@ -96,7 +96,7 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
             Container(
               width: 100,
               height: 100,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primaryLight,
                 shape: BoxShape.circle,
               ),
@@ -296,7 +296,7 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                             value: 'default',
                             child: Row(
                               children: [
-                                Icon(Icons.check_circle_outline, color: AppColors.success, size: 20),
+                                const Icon(Icons.check_circle_outline, color: AppColors.success, size: 20),
                                 const SizedBox(width: AppSpacing.sm),
                                 Text('Définir par défaut', style: AppTypography.bodyMd.copyWith(color: colors.textPrimary)),
                               ],
@@ -306,7 +306,7 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                           value: 'edit',
                           child: Row(
                             children: [
-                              Icon(Icons.edit_outlined, color: AppColors.primary, size: 20),
+                              const Icon(Icons.edit_outlined, color: AppColors.primary, size: 20),
                               const SizedBox(width: AppSpacing.sm),
                               Text('Modifier', style: AppTypography.bodyMd.copyWith(color: colors.textPrimary)),
                             ],
@@ -316,7 +316,7 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete_outline, color: AppColors.error, size: 20),
+                              const Icon(Icons.delete_outline, color: AppColors.error, size: 20),
                               const SizedBox(width: AppSpacing.sm),
                               Text('Supprimer', style: AppTypography.bodyMd.copyWith(color: AppColors.error)),
                             ],
@@ -662,7 +662,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.location_on, color: AppColors.primary, size: 20),
+                        const Icon(Icons.location_on, color: AppColors.primary, size: 20),
                         const SizedBox(width: AppSpacing.sm),
                         Expanded(
                           child: Text(
@@ -710,7 +710,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.check_circle_outline, color: AppColors.success, size: 24),
+                        const Icon(Icons.check_circle_outline, color: AppColors.success, size: 24),
                         const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Column(

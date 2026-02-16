@@ -156,7 +156,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               color: colors.background,
                               borderRadius: BorderRadius.circular(AppBorderRadius.md),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.edit_outlined,
                               color: AppColors.primary,
                               size: 20,
@@ -229,15 +229,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         _MenuItem(
                           icon: Icons.favorite_outline,
                           title: 'Plats favoris',
-                          subtitle: '12 plats',
-                          onTap: () {},
+                          subtitle: '${appProvider.favoriteDishIds.length} plat${appProvider.favoriteDishIds.length > 1 ? 's' : ''}',
+                          onTap: () => Navigator.of(context).pushNamed('/favorite-dishes'),
                           colors: colors,
                         ),
                         _MenuItem(
                           icon: Icons.star_outline,
                           title: 'Chefs suivis',
-                          subtitle: '5 chefs',
-                          onTap: () {},
+                          subtitle: '${appProvider.followedCookIds.length} chef${appProvider.followedCookIds.length > 1 ? 's' : ''}',
+                          onTap: () => Navigator.of(context).pushNamed('/followed-cooks'),
                           colors: colors,
                         ),
                       ],
@@ -720,7 +720,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             if (isSelected)
-              Icon(Icons.check_circle, color: AppColors.primary, size: 24),
+              const Icon(Icons.check_circle, color: AppColors.primary, size: 24),
           ],
         ),
       ),

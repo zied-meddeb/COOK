@@ -1,25 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../theme/theme.dart';
 import '../api/mock_api.dart';
 import '../widgets/widgets.dart';
 import '../models/models.dart';
+import '../providers/providers.dart';
 
-class CookProfileScreen extends StatelessWidget {
+class CookProfileScreen extends StatefulWidget {
   final String cookId;
 
   const CookProfileScreen({super.key, required this.cookId});
 
+  @override
+  State<CookProfileScreen> createState() => _CookProfileScreenState();
+}
+
+class _CookProfileScreenState extends State<CookProfileScreen> {
   Cook get cook {
     return mockCooks.firstWhere(
-      (c) => c.id == cookId,
+      (c) => c.id == widget.cookId,
       orElse: () => mockCooks.first,
     );
   }
 
   List<Dish> get cookDishes {
-    return mockDishes.where((d) => d.cookId == cookId).toList();
+    return mockDishes.where((d) => d.cookId == widget.cookId).toList();
+  }
+
+  void _toggleFollow() {
+    HapticFeedback.mediumImpact();
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+    final wasFollowing = appProvider.isFollowingCook(cook.id);
+    appProvider.toggleFollowCook(cook.id);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              wasFollowing ? Icons.person_remove : Icons.person_add,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              wasFollowing
+                ? 'Vous ne suivez plus ${cook.name}'
+                : 'Vous suivez ${cook.name}',
+            ),
+          ],
+        ),
+        backgroundColor: wasFollowing ? Colors.grey : AppColors.primary,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -384,11 +421,18 @@ class CookProfileScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: AppButton(
-                      label: 'Follow',
-                      onPressed: () {},
-                      variant: AppButtonVariant.secondary,
-                      size: AppButtonSize.lg,
+                    child: Consumer<AppProvider>(
+                      builder: (context, appProvider, child) {
+                        final isFollowing = appProvider.isFollowingCook(cook.id);
+                        return AppButton(
+                          label: isFollowing ? 'Following ✓' : 'Follow',
+                          onPressed: _toggleFollow,
+                          variant: isFollowing
+                              ? AppButtonVariant.primary
+                              : AppButtonVariant.secondary,
+                          size: AppButtonSize.lg,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),

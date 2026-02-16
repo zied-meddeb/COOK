@@ -5,7 +5,7 @@ final List<Dish> mockDishes = [
   // Traditionnel
   const Dish(
     id: '1',
-    name: "Couscous Royal Maison",
+    name: 'Couscous Royal Maison',
     description: 'Un authentique couscous royal avec merguez, agneau, poulet et légumes frais. Recette traditionnelle transmise de génération en génération.',
     price: 14.50,
     rating: 4.9,
@@ -26,7 +26,7 @@ final List<Dish> mockDishes = [
   ),
   const Dish(
     id: '2',
-    name: "Lasagnes de Nonna",
+    name: 'Lasagnes de Nonna',
     description: 'Lasagnes crémeuses avec sauce bolognaise maison, béchamel onctueuse et parmesan. La vraie recette italienne.',
     price: 12.50,
     rating: 4.8,
@@ -46,7 +46,7 @@ final List<Dish> mockDishes = [
   // Asiatique
   const Dish(
     id: '3',
-    name: "Pad Thai aux Crevettes",
+    name: 'Pad Thai aux Crevettes',
     description: 'Nouilles de riz sautées avec crevettes fraîches, cacahuètes, germes de soja et sauce tamarin maison.',
     price: 11.00,
     rating: 4.7,
@@ -65,7 +65,7 @@ final List<Dish> mockDishes = [
   ),
   const Dish(
     id: '4',
-    name: "Dumplings Vapeur",
+    name: 'Dumplings Vapeur',
     description: 'Raviolis chinois faits main, farcis au porc et gingembre, cuits à la vapeur. Servis avec sauce soja.',
     price: 9.50,
     rating: 5.0,
@@ -85,7 +85,7 @@ final List<Dish> mockDishes = [
   // Vegan
   const Dish(
     id: '5',
-    name: "Buddha Bowl Quinoa",
+    name: 'Buddha Bowl Quinoa',
     description: 'Bowl complet avec quinoa, avocat, pois chiches rôtis, légumes grillés et sauce tahini citronnée.',
     price: 10.50,
     rating: 4.6,
@@ -104,7 +104,7 @@ final List<Dish> mockDishes = [
   ),
   const Dish(
     id: '6',
-    name: "Curry de Lentilles",
+    name: 'Curry de Lentilles',
     description: 'Dahl onctueux aux lentilles corail, lait de coco et épices indiennes. Accompagné de riz basmati.',
     price: 9.00,
     rating: 4.7,
@@ -124,7 +124,7 @@ final List<Dish> mockDishes = [
   // Oriental
   const Dish(
     id: '7',
-    name: "Tajine d'Agneau",
+    name: 'Tajine d\'Agneau',
     description: 'Tajine mijoté à la marocaine avec agneau fondant, pruneaux, amandes et miel. Un voyage culinaire.',
     price: 16.00,
     rating: 4.9,
@@ -143,7 +143,7 @@ final List<Dish> mockDishes = [
   ),
   const Dish(
     id: '8',
-    name: "Falafels Maison",
+    name: 'Falafels Maison',
     description: 'Boulettes de pois chiches croustillantes avec sauce tahini, salade fraîche et pain pita.',
     price: 8.50,
     rating: 4.5,
@@ -163,7 +163,7 @@ final List<Dish> mockDishes = [
   // Sucré
   const Dish(
     id: '9',
-    name: "Tiramisu Traditionnel",
+    name: 'Tiramisu Traditionnel',
     description: 'Le vrai tiramisu italien avec mascarpone crémeux, café espresso et cacao amer.',
     price: 6.50,
     rating: 4.8,
@@ -182,7 +182,7 @@ final List<Dish> mockDishes = [
   ),
   const Dish(
     id: '10',
-    name: "Crêpes Suzette",
+    name: 'Crêpes Suzette',
     description: 'Crêpes fines flambées au Grand Marnier avec beurre d\'orange et zeste. Un classique français.',
     price: 8.00,
     rating: 4.6,
@@ -202,7 +202,7 @@ final List<Dish> mockDishes = [
   // Healthy
   const Dish(
     id: '11',
-    name: "Saumon Grillé & Quinoa",
+    name: 'Saumon Grillé & Quinoa',
     description: 'Pavé de saumon grillé avec quinoa aux légumes, sauce yaourt aux herbes.',
     price: 15.00,
     rating: 4.7,
@@ -221,7 +221,7 @@ final List<Dish> mockDishes = [
   ),
   const Dish(
     id: '12',
-    name: "Poke Bowl Thon",
+    name: 'Poke Bowl Thon',
     description: 'Bowl hawaïen avec thon frais, riz vinaigré, avocat, mangue et sauce ponzu.',
     price: 13.50,
     rating: 4.8,
@@ -384,12 +384,12 @@ final List<Cook> mockCooks = [
 
 // ==================== MOCK ORDERS ====================
 final List<Order> mockOrders = [
-  Order(
+  const Order(
     id: '1',
     status: 'out_for_delivery',
     estimatedArrival: '12:45',
     eta: 15,
-    dishes: const [
+    dishes: [
       OrderItem(id: '1', name: 'Couscous Royal Maison', quantity: 1, price: 14.50),
       OrderItem(id: '9', name: 'Tiramisu Traditionnel', quantity: 2, price: 6.50),
     ],
@@ -400,7 +400,7 @@ final List<Order> mockOrders = [
     driverAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
     cookId: '1',
     cookName: 'Fatima Benali',
-    timeline: const [
+    timeline: [
       TimelineStep(step: 'delivered', label: 'Livré', timestamp: null),
       TimelineStep(step: 'out_for_delivery', label: 'En livraison', timestamp: '12:30', active: true),
       TimelineStep(step: 'ready', label: 'Prêt', timestamp: '12:15'),
@@ -408,12 +408,12 @@ final List<Order> mockOrders = [
       TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '11:50'),
     ],
   ),
-  Order(
+  const Order(
     id: '2',
     status: 'preparing',
     estimatedArrival: '13:30',
     eta: 45,
-    dishes: const [
+    dishes: [
       OrderItem(id: '3', name: 'Pad Thai aux Crevettes', quantity: 2, price: 11.00),
     ],
     total: 25.00,
@@ -423,7 +423,7 @@ final List<Order> mockOrders = [
     driverAvatar: '',
     cookId: '3',
     cookName: 'Lin Wei',
-    timeline: const [
+    timeline: [
       TimelineStep(step: 'delivered', label: 'Livré', timestamp: null),
       TimelineStep(step: 'out_for_delivery', label: 'En livraison', timestamp: null),
       TimelineStep(step: 'ready', label: 'Prêt', timestamp: null),
@@ -431,12 +431,12 @@ final List<Order> mockOrders = [
       TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '12:40'),
     ],
   ),
-  Order(
+  const Order(
     id: '3',
     status: 'delivered',
     estimatedArrival: '10:00',
     eta: 0,
-    dishes: const [
+    dishes: [
       OrderItem(id: '5', name: 'Buddha Bowl Quinoa', quantity: 1, price: 10.50),
       OrderItem(id: '11', name: 'Saumon Grillé & Quinoa', quantity: 1, price: 15.00),
     ],
@@ -447,7 +447,7 @@ final List<Order> mockOrders = [
     driverAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
     cookId: '4',
     cookName: 'Sophie Martin',
-    timeline: const [
+    timeline: [
       TimelineStep(step: 'delivered', label: 'Livré', timestamp: '10:00', active: true),
       TimelineStep(step: 'out_for_delivery', label: 'En livraison', timestamp: '09:45'),
       TimelineStep(step: 'ready', label: 'Prêt', timestamp: '09:30'),
@@ -464,7 +464,7 @@ final List<Review> mockReviews = [
     authorName: 'Jean-Pierre M.',
     authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
     rating: 5,
-    text: "Absolument délicieux! Le couscous était comme celui de ma grand-mère. Portions généreuses et livraison rapide. Je recommande vivement!",
+    text: 'Absolument délicieux! Le couscous était comme celui de ma grand-mère. Portions généreuses et livraison rapide. Je recommande vivement!',
     timestamp: 'Il y a 2 jours',
     image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400',
   ),
@@ -490,7 +490,7 @@ final List<Review> mockReviews = [
     authorName: 'Sophie D.',
     authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
     rating: 5,
-    text: "Le Buddha Bowl était frais et savoureux. Parfait pour un déjeuner healthy! La sauce tahini est à tomber.",
+    text: 'Le Buddha Bowl était frais et savoureux. Parfait pour un déjeuner healthy! La sauce tahini est à tomber.',
     timestamp: 'Il y a 1 semaine',
   ),
   const Review(

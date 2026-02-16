@@ -21,7 +21,7 @@ class HomeChefDeliveryApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
-            title: "HomeChef Delivery",
+            title: 'HomeChef Delivery',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               useMaterial3: true,

@@ -6,11 +6,15 @@ class AppProvider extends ChangeNotifier {
   Cart _cart = Cart.empty();
   bool _isLoading = false;
   List<SavedAddress> _savedAddresses = [];
+  final List<String> _favoriteDishIds = [];
+  final List<String> _followedCookIds = [];
 
   User? get user => _user;
   Cart get cart => _cart;
   bool get isLoading => _isLoading;
   List<SavedAddress> get savedAddresses => _savedAddresses;
+  List<String> get favoriteDishIds => _favoriteDishIds;
+  List<String> get followedCookIds => _followedCookIds;
 
   void setUser(User? user) {
     _user = user;
@@ -123,5 +127,59 @@ class AppProvider extends ChangeNotifier {
       addr.copyWith(isDefault: addr.id == addressId)
     ).toList();
     notifyListeners();
+  }
+
+  // Favorites management methods
+  bool isDishFavorite(String dishId) {
+    return _favoriteDishIds.contains(dishId);
+  }
+
+  void toggleFavoriteDish(String dishId) {
+    if (_favoriteDishIds.contains(dishId)) {
+      _favoriteDishIds.remove(dishId);
+    } else {
+      _favoriteDishIds.add(dishId);
+    }
+    notifyListeners();
+  }
+
+  void addFavoriteDish(String dishId) {
+    if (!_favoriteDishIds.contains(dishId)) {
+      _favoriteDishIds.add(dishId);
+      notifyListeners();
+    }
+  }
+
+  void removeFavoriteDish(String dishId) {
+    if (_favoriteDishIds.remove(dishId)) {
+      notifyListeners();
+    }
+  }
+
+  // Followed cooks management methods
+  bool isFollowingCook(String cookId) {
+    return _followedCookIds.contains(cookId);
+  }
+
+  void toggleFollowCook(String cookId) {
+    if (_followedCookIds.contains(cookId)) {
+      _followedCookIds.remove(cookId);
+    } else {
+      _followedCookIds.add(cookId);
+    }
+    notifyListeners();
+  }
+
+  void followCook(String cookId) {
+    if (!_followedCookIds.contains(cookId)) {
+      _followedCookIds.add(cookId);
+      notifyListeners();
+    }
+  }
+
+  void unfollowCook(String cookId) {
+    if (_followedCookIds.remove(cookId)) {
+      notifyListeners();
+    }
   }
 }

@@ -116,6 +116,18 @@ class AppRouter {
           settings: settings,
         );
 
+      case '/favorite-dishes':
+        return MaterialPageRoute(
+          builder: (_) => const FavoriteDishesScreen(),
+          settings: settings,
+        );
+
+      case '/followed-cooks':
+        return MaterialPageRoute(
+          builder: (_) => const FollowedCooksScreen(),
+          settings: settings,
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

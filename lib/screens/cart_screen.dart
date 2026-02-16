@@ -131,7 +131,7 @@ class _CartScreenState extends State<CartScreen> {
                         Container(
                           width: 120,
                           height: 120,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.primaryLight,
                             shape: BoxShape.circle,
                           ),
@@ -225,7 +225,7 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(AppBorderRadius.md),
                                 border: Border.all(color: colors.border),
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.delete_outline,
                                 color: AppColors.error,
                               ),
@@ -780,7 +780,7 @@ class _CartScreenState extends State<CartScreen> {
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Row(
               children: [
-                Icon(Icons.bookmark_outline, color: AppColors.primary, size: 20),
+                const Icon(Icons.bookmark_outline, color: AppColors.primary, size: 20),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Adresses enregistrées',
@@ -888,11 +888,11 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   if (_selectedAddress == address.address)
-                    Icon(Icons.check_circle, color: AppColors.primary, size: 24),
+                    const Icon(Icons.check_circle, color: AppColors.primary, size: 24),
                 ],
               ),
             ),
-          )).toList(),
+          )),
         ],
       ),
     );
@@ -1032,7 +1032,7 @@ class _CartScreenState extends State<CartScreen> {
                       _showSearchResults = false;
                     });
                   },
-                  child: Icon(Icons.edit, color: AppColors.success, size: 18),
+                  child: const Icon(Icons.edit, color: AppColors.success, size: 18),
                 ),
               ],
             ),
@@ -1346,7 +1346,7 @@ class _CartScreenState extends State<CartScreen> {
 
     if (mounted) {
       // Simulated current location (Tunis Centre)
-      final location = const LatLng(36.8008, 10.1800);
+      const location = LatLng(36.8008, 10.1800);
       final address = _getAddressFromCoordinates(location.latitude, location.longitude);
       setState(() {
         _selectedLocation = location;
@@ -1419,10 +1419,15 @@ class _CartScreenState extends State<CartScreen> {
 
       // Determine closest major city
       String city = 'Tunis';
-      if (lat < 34.0) city = 'Sfax';
-      else if (lat < 35.5) city = 'Sousse';
-      else if (lat > 37.0) city = 'Bizerte';
-      else if (lng > 10.5) city = 'Nabeul';
+      if (lat < 34.0) {
+        city = 'Sfax';
+      } else if (lat < 35.5) {
+        city = 'Sousse';
+      } else if (lat > 37.0) {
+        city = 'Bizerte';
+      } else if (lng > 10.5) {
+        city = 'Nabeul';
+      }
 
       return '$streetNumber Rue Principale, $city, Tunisie';
     }
@@ -2413,10 +2418,15 @@ class _FullScreenMapPickerState extends State<_FullScreenMapPicker> {
 
       // Determine closest major city
       String city = 'Tunis';
-      if (lat < 34.0) city = 'Sfax';
-      else if (lat < 35.5) city = 'Sousse';
-      else if (lat > 37.0) city = 'Bizerte';
-      else if (lng > 10.5) city = 'Nabeul';
+      if (lat < 34.0) {
+        city = 'Sfax';
+      } else if (lat < 35.5) {
+        city = 'Sousse';
+      } else if (lat > 37.0) {
+        city = 'Bizerte';
+      } else if (lng > 10.5) {
+        city = 'Nabeul';
+      }
 
       return '$streetNumber Rue Principale, $city, Tunisie';
     }

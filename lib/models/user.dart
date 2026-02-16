@@ -6,6 +6,8 @@ class User {
   final String email;
   final UserRole role;
   final String? avatar;
+  final List<String> favoriteDishIds;
+  final List<String> followedCookIds;
 
   const User({
     required this.id,
@@ -13,6 +15,8 @@ class User {
     required this.email,
     required this.role,
     this.avatar,
+    this.favoriteDishIds = const [],
+    this.followedCookIds = const [],
   });
 
   User copyWith({
@@ -21,6 +25,8 @@ class User {
     String? email,
     UserRole? role,
     String? avatar,
+    List<String>? favoriteDishIds,
+    List<String>? followedCookIds,
   }) {
     return User(
       id: id ?? this.id,
@@ -28,6 +34,11 @@ class User {
       email: email ?? this.email,
       role: role ?? this.role,
       avatar: avatar ?? this.avatar,
+      favoriteDishIds: favoriteDishIds ?? this.favoriteDishIds,
+      followedCookIds: followedCookIds ?? this.followedCookIds,
     );
   }
+
+  bool isDishFavorite(String dishId) => favoriteDishIds.contains(dishId);
+  bool isFollowingCook(String cookId) => followedCookIds.contains(cookId);
 }
