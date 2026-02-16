@@ -6,9 +6,8 @@ class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-      case '/splash':
         return MaterialPageRoute(
-          builder: (_) => const SplashScreen(),
+          builder: (_) => const ClientNavigator(),
           settings: settings,
         );
         
@@ -110,7 +109,13 @@ class AppRouter {
           builder: (_) => const AddDishScreen(),
           settings: settings,
         );
-        
+
+      case '/saved-addresses':
+        return MaterialPageRoute(
+          builder: (_) => const SavedAddressesScreen(),
+          settings: settings,
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

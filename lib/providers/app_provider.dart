@@ -5,10 +5,12 @@ class AppProvider extends ChangeNotifier {
   User? _user;
   Cart _cart = Cart.empty();
   bool _isLoading = false;
+  List<SavedAddress> _savedAddresses = [];
 
   User? get user => _user;
   Cart get cart => _cart;
   bool get isLoading => _isLoading;
+  List<SavedAddress> get savedAddresses => _savedAddresses;
 
   void setUser(User? user) {
     _user = user;
@@ -74,6 +76,52 @@ class AppProvider extends ChangeNotifier {
 
   void clearCart() {
     _cart = Cart.empty();
+    notifyListeners();
+  }
+
+  // Address management methods
+  void addSavedAddress(SavedAddress address) {
+    // If this is set as default, remove default from others
+    if (address.isDefault) {
+      _savedAddresses = _savedAddresses.map((addr) =>
+        addr.copyWith(isDefault: false)
+      ).toList();
+    }
+    // If this is the first address, make it default
+    final isFirst = _savedAddresses.isEmpty;
+    _savedAddresses.add(isFirst ? address.copyWith(isDefault: true) : address);
+    notifyListeners();
+  }
+
+  void updateSavedAddress(SavedAddress updatedAddress) {
+    final index = _savedAddresses.indexWhere((addr) => addr.id == updatedAddress.id);
+    if (index != -1) {
+      // If setting as default, remove default from others
+      if (updatedAddress.isDefault) {
+        _savedAddresses = _savedAddresses.map((addr) =>
+          addr.copyWith(isDefault: false)
+        ).toList();
+      }
+      _savedAddresses[index] = updatedAddress;
+      notifyListeners();
+    }
+  }
+
+  void deleteSavedAddress(String addressId) {
+    final wasDefault = _savedAddresses.any((addr) => addr.id == addressId && addr.isDefault);
+    _savedAddresses.removeWhere((addr) => addr.id == addressId);
+
+    // If we deleted the default address, make the first one default
+    if (wasDefault && _savedAddresses.isNotEmpty) {
+      _savedAddresses[0] = _savedAddresses[0].copyWith(isDefault: true);
+    }
+    notifyListeners();
+  }
+
+  void setDefaultAddress(String addressId) {
+    _savedAddresses = _savedAddresses.map((addr) =>
+      addr.copyWith(isDefault: addr.id == addressId)
+    ).toList();
     notifyListeners();
   }
 }

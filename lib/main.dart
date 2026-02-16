@@ -54,7 +54,7 @@ class HomeChefDeliveryApp extends StatelessWidget {
               fontFamily: 'System',
             ),
             themeMode: _convertThemeMode(themeProvider.themeMode),
-            initialRoute: '/splash',
+            initialRoute: '/',
             onGenerateRoute: AppRouter.generateRoute,
           );
         },

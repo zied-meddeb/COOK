@@ -258,8 +258,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         _MenuItem(
                           icon: Icons.location_on_outlined,
                           title: 'Mes adresses',
-                          subtitle: '2 adresses enregistrées',
-                          onTap: () {},
+                          subtitle: '${appProvider.savedAddresses.length} adresse${appProvider.savedAddresses.length > 1 ? 's' : ''} enregistrée${appProvider.savedAddresses.length > 1 ? 's' : ''}',
+                          onTap: () => Navigator.of(context).pushNamed('/saved-addresses'),
                           colors: colors,
                         ),
                         _MenuItem(
