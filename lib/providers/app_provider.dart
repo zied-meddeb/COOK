@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/models.dart';
+import '../api/mock_api.dart';
 
 class AppProvider extends ChangeNotifier {
   User? _user;
@@ -9,12 +10,22 @@ class AppProvider extends ChangeNotifier {
   final List<String> _favoriteDishIds = [];
   final List<String> _followedCookIds = [];
 
+  // Cook-specific state
+  Cook? _currentCook;
+  List<Dish> _cookDishes = [];
+  List<Order> _cookOrders = [];
+
   User? get user => _user;
   Cart get cart => _cart;
   bool get isLoading => _isLoading;
   List<SavedAddress> get savedAddresses => _savedAddresses;
   List<String> get favoriteDishIds => _favoriteDishIds;
   List<String> get followedCookIds => _followedCookIds;
+
+  // Cook getters
+  Cook? get currentCook => _currentCook;
+  List<Dish> get cookDishes => _cookDishes;
+  List<Order> get cookOrders => _cookOrders;
 
   void setUser(User? user) {
     _user = user;
@@ -182,4 +193,99 @@ class AppProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // Cook-specific methods
+  void setCook(Cook? cook) {
+    _currentCook = cook;
+    if (cook != null) {
+      loadCookData(cook.id);
+    }
+    notifyListeners();
+  }
+
+  Future<void> loadCookData(String cookId) async {
+    _cookDishes = await mockApi.fetchDishes(cookId: cookId);
+    _cookOrders = await mockApi.fetchOrdersByCook(cookId);
+    notifyListeners();
+  }
+
+  Future<void> refreshCookOrders() async {
+    if (_currentCook != null) {
+      _cookOrders = await mockApi.fetchOrdersByCook(_currentCook!.id);
+      notifyListeners();
+    }
+  }
+
+  Future<void> refreshCookDishes() async {
+    if (_currentCook != null) {
+      _cookDishes = await mockApi.fetchDishes(cookId: _currentCook!.id);
+      notifyListeners();
+    }
+  }
+
+  void updateCookOrderStatus(String orderId, String newStatus) {
+    mockApi.updateOrderStatus(orderId, newStatus);
+    final index = _cookOrders.indexWhere((o) => o.id == orderId);
+    if (index != -1) {
+      _cookOrders[index] = _cookOrders[index].copyWith(status: newStatus);
+      notifyListeners();
+    }
+  }
+
+  void addCookDish(Dish dish) {
+    mockApi.addDish(dish);
+    _cookDishes.add(dish);
+    notifyListeners();
+  }
+
+  void updateCookDish(Dish dish) {
+    mockApi.updateDish(dish);
+    final index = _cookDishes.indexWhere((d) => d.id == dish.id);
+    if (index != -1) {
+      _cookDishes[index] = dish;
+      notifyListeners();
+    }
+  }
+
+  void deleteCookDish(String dishId) {
+    mockApi.deleteDish(dishId);
+    _cookDishes.removeWhere((d) => d.id == dishId);
+    notifyListeners();
+  }
+
+  void toggleCookDishAvailability(String dishId) {
+    mockApi.toggleDishAvailability(dishId);
+    final index = _cookDishes.indexWhere((d) => d.id == dishId);
+    if (index != -1) {
+      _cookDishes[index] = _cookDishes[index].copyWith(available: !_cookDishes[index].available);
+      notifyListeners();
+    }
+  }
+
+  void toggleCookAvailability() {
+    if (_currentCook != null) {
+      mockApi.toggleCookAvailability(_currentCook!.id);
+      _currentCook = _currentCook!.copyWith(isAvailable: !_currentCook!.isAvailable);
+      notifyListeners();
+    }
+  }
+
+  void updateCookProfile(Cook updatedCook) {
+    mockApi.updateCookProfile(updatedCook);
+    _currentCook = updatedCook;
+    notifyListeners();
+  }
+
+  double get cookRevenue => _currentCook != null
+      ? mockApi.getCookRevenue(_currentCook!.id)
+      : 0.0;
+
+  int get cookOrderCount => _currentCook != null
+      ? mockApi.getCookOrderCount(_currentCook!.id)
+      : 0;
+
+  List<Order> get cookNewOrders => _cookOrders.where((o) => o.status == 'new').toList();
+  List<Order> get cookPreparingOrders => _cookOrders.where((o) => o.status == 'preparing').toList();
+  List<Order> get cookReadyOrders => _cookOrders.where((o) => o.status == 'ready').toList();
+  List<Order> get cookDeliveredOrders => _cookOrders.where((o) => o.status == 'delivered' || o.status == 'out_for_delivery').toList();
 }

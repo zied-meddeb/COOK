@@ -186,8 +186,8 @@ class _CookNavigatorState extends State<CookNavigator> {
 
     final screens = [
       const CookDashboardScreen(),
-      const _CookOrdersPlaceholder(),
-      const _CookProfilePlaceholder(),
+      const CookOrdersScreen(),
+      const CookProfileEditScreen(),
     ];
 
     return Scaffold(
@@ -275,42 +275,4 @@ class _CookNavigatorState extends State<CookNavigator> {
   }
 }
 
-class _CookOrdersPlaceholder extends StatelessWidget {
-  const _CookOrdersPlaceholder();
 
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final colors = themeProvider.colors(context);
-
-    return Scaffold(
-      backgroundColor: colors.background,
-      body: Center(
-        child: Text(
-          'Orders Screen',
-          style: AppTypography.h2.copyWith(color: colors.textPrimary),
-        ),
-      ),
-    );
-  }
-}
-
-class _CookProfilePlaceholder extends StatelessWidget {
-  const _CookProfilePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final colors = themeProvider.colors(context);
-
-    return Scaffold(
-      backgroundColor: colors.background,
-      body: Center(
-        child: Text(
-          'Profile Screen',
-          style: AppTypography.h2.copyWith(color: colors.textPrimary),
-        ),
-      ),
-    );
-  }
-}

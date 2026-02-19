@@ -15,3 +15,8 @@ export 'add_dish_screen.dart';
 export 'saved_addresses_screen.dart';
 export 'favorite_dishes_screen.dart';
 export 'followed_cooks_screen.dart';
+export 'cook_orders_screen.dart';
+export 'cook_menu_screen.dart';
+export 'cook_profile_edit_screen.dart';
+export 'cook_reviews_screen.dart';
+export 'edit_dish_screen.dart';

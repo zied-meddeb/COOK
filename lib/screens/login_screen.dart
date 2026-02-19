@@ -4,6 +4,7 @@ import '../theme/theme.dart';
 import '../widgets/widgets.dart';
 import '../providers/providers.dart';
 import '../models/models.dart';
+import '../api/mock_api.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,6 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (_selectedRole == UserRole.client) {
         Navigator.of(context).pushReplacementNamed('/client');
       } else {
+        // Initialize cook data - use cook id '2' (Maria Giuliani) as the logged-in cook
+        final cook = mockCooks.firstWhere((c) => c.id == '2');
+        appProvider.setCook(cook);
         Navigator.of(context).pushReplacementNamed('/cook');
       }
     }

@@ -384,12 +384,12 @@ final List<Cook> mockCooks = [
 
 // ==================== MOCK ORDERS ====================
 final List<Order> mockOrders = [
-  const Order(
+  Order(
     id: '1',
     status: 'out_for_delivery',
     estimatedArrival: '12:45',
     eta: 15,
-    dishes: [
+    dishes: const [
       OrderItem(id: '1', name: 'Couscous Royal Maison', quantity: 1, price: 14.50),
       OrderItem(id: '9', name: 'Tiramisu Traditionnel', quantity: 2, price: 6.50),
     ],
@@ -400,7 +400,10 @@ final List<Order> mockOrders = [
     driverAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
     cookId: '1',
     cookName: 'Fatima Benali',
-    timeline: [
+    clientName: 'Sarah M.',
+    clientId: 'c1',
+    createdAt: DateTime.now().subtract(const Duration(hours: 1)),
+    timeline: const [
       TimelineStep(step: 'delivered', label: 'Livré', timestamp: null),
       TimelineStep(step: 'out_for_delivery', label: 'En livraison', timestamp: '12:30', active: true),
       TimelineStep(step: 'ready', label: 'Prêt', timestamp: '12:15'),
@@ -408,12 +411,12 @@ final List<Order> mockOrders = [
       TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '11:50'),
     ],
   ),
-  const Order(
+  Order(
     id: '2',
     status: 'preparing',
     estimatedArrival: '13:30',
     eta: 45,
-    dishes: [
+    dishes: const [
       OrderItem(id: '3', name: 'Pad Thai aux Crevettes', quantity: 2, price: 11.00),
     ],
     total: 25.00,
@@ -423,7 +426,10 @@ final List<Order> mockOrders = [
     driverAvatar: '',
     cookId: '3',
     cookName: 'Lin Wei',
-    timeline: [
+    clientName: 'Thomas B.',
+    clientId: 'c2',
+    createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+    timeline: const [
       TimelineStep(step: 'delivered', label: 'Livré', timestamp: null),
       TimelineStep(step: 'out_for_delivery', label: 'En livraison', timestamp: null),
       TimelineStep(step: 'ready', label: 'Prêt', timestamp: null),
@@ -431,12 +437,12 @@ final List<Order> mockOrders = [
       TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '12:40'),
     ],
   ),
-  const Order(
+  Order(
     id: '3',
     status: 'delivered',
     estimatedArrival: '10:00',
     eta: 0,
-    dishes: [
+    dishes: const [
       OrderItem(id: '5', name: 'Buddha Bowl Quinoa', quantity: 1, price: 10.50),
       OrderItem(id: '11', name: 'Saumon Grillé & Quinoa', quantity: 1, price: 15.00),
     ],
@@ -447,12 +453,123 @@ final List<Order> mockOrders = [
     driverAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
     cookId: '4',
     cookName: 'Sophie Martin',
-    timeline: [
+    clientName: 'Marie L.',
+    clientId: 'c3',
+    createdAt: DateTime.now().subtract(const Duration(hours: 3)),
+    timeline: const [
       TimelineStep(step: 'delivered', label: 'Livré', timestamp: '10:00', active: true),
       TimelineStep(step: 'out_for_delivery', label: 'En livraison', timestamp: '09:45'),
       TimelineStep(step: 'ready', label: 'Prêt', timestamp: '09:30'),
       TimelineStep(step: 'preparing', label: 'En préparation', timestamp: '09:10'),
       TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '09:00'),
+    ],
+  ),
+  // Additional cook-specific orders
+  Order(
+    id: '4',
+    status: 'new',
+    estimatedArrival: '14:00',
+    eta: 60,
+    dishes: const [
+      OrderItem(id: '7', name: 'Tajine d\'Agneau', quantity: 1, price: 16.00),
+      OrderItem(id: '1', name: 'Couscous Royal Maison', quantity: 1, price: 14.50),
+    ],
+    total: 33.50,
+    driverId: '',
+    driverName: '',
+    driverRating: 0,
+    driverAvatar: '',
+    cookId: '1',
+    cookName: 'Fatima Benali',
+    clientName: 'Jean-Pierre M.',
+    clientId: 'c4',
+    createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+    timeline: const [
+      TimelineStep(step: 'delivered', label: 'Livré'),
+      TimelineStep(step: 'out_for_delivery', label: 'En livraison'),
+      TimelineStep(step: 'ready', label: 'Prêt'),
+      TimelineStep(step: 'preparing', label: 'En préparation'),
+      TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '13:00', active: true),
+    ],
+  ),
+  Order(
+    id: '5',
+    status: 'new',
+    estimatedArrival: '14:15',
+    eta: 45,
+    dishes: const [
+      OrderItem(id: '4', name: 'Dumplings Vapeur', quantity: 3, price: 9.50),
+      OrderItem(id: '12', name: 'Poke Bowl Thon', quantity: 1, price: 13.50),
+    ],
+    total: 42.00,
+    driverId: '',
+    driverName: '',
+    driverRating: 0,
+    driverAvatar: '',
+    cookId: '3',
+    cookName: 'Lin Wei',
+    clientName: 'Sophie D.',
+    clientId: 'c5',
+    createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+    timeline: const [
+      TimelineStep(step: 'delivered', label: 'Livré'),
+      TimelineStep(step: 'out_for_delivery', label: 'En livraison'),
+      TimelineStep(step: 'ready', label: 'Prêt'),
+      TimelineStep(step: 'preparing', label: 'En préparation'),
+      TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '13:10', active: true),
+    ],
+  ),
+  Order(
+    id: '6',
+    status: 'ready',
+    estimatedArrival: '13:15',
+    eta: 10,
+    dishes: const [
+      OrderItem(id: '2', name: 'Lasagnes de Nonna', quantity: 2, price: 12.50),
+      OrderItem(id: '9', name: 'Tiramisu Traditionnel', quantity: 1, price: 6.50),
+    ],
+    total: 31.50,
+    driverId: '3',
+    driverName: 'Pierre K.',
+    driverRating: 4.7,
+    driverAvatar: '',
+    cookId: '2',
+    cookName: 'Maria Giuliani',
+    clientName: 'Ahmed R.',
+    clientId: 'c6',
+    createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+    timeline: const [
+      TimelineStep(step: 'delivered', label: 'Livré'),
+      TimelineStep(step: 'out_for_delivery', label: 'En livraison'),
+      TimelineStep(step: 'ready', label: 'Prêt', timestamp: '13:00', active: true),
+      TimelineStep(step: 'preparing', label: 'En préparation', timestamp: '12:30'),
+      TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '12:15'),
+    ],
+  ),
+  Order(
+    id: '7',
+    status: 'preparing',
+    estimatedArrival: '13:45',
+    eta: 30,
+    dishes: const [
+      OrderItem(id: '1', name: 'Couscous Royal Maison', quantity: 2, price: 14.50),
+    ],
+    total: 32.00,
+    driverId: '',
+    driverName: '',
+    driverRating: 0,
+    driverAvatar: '',
+    cookId: '1',
+    cookName: 'Fatima Benali',
+    clientName: 'Emma W.',
+    clientId: 'c7',
+    createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+    timeline: const [
+      TimelineStep(step: 'delivered', label: 'Livré'),
+      TimelineStep(step: 'out_for_delivery', label: 'En livraison'),
+      TimelineStep(step: 'ready', label: 'Prêt'),
+      TimelineStep(step: 'preparing', label: 'En préparation', timestamp: '13:15', active: true),
+      TimelineStep(step: 'received', label: 'Commande reçue', timestamp: '13:00'),
     ],
   ),
 ];
@@ -617,6 +734,70 @@ class MockApi {
   Future<List<FoodCategory>> fetchCategories() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return FoodCategory.categories;
+  }
+
+  // Cook-specific methods
+  Future<List<Order>> fetchOrdersByCook(String cookId) async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    return mockOrders.where((o) => o.cookId == cookId).toList();
+  }
+
+  Future<List<Order>> fetchCookOrdersByStatus(String cookId, String status) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return mockOrders.where((o) => o.cookId == cookId && o.status == status).toList();
+  }
+
+  void updateOrderStatus(String orderId, String newStatus) {
+    final index = mockOrders.indexWhere((o) => o.id == orderId);
+    if (index != -1) {
+      mockOrders[index] = mockOrders[index].copyWith(status: newStatus);
+    }
+  }
+
+  void addDish(Dish dish) {
+    mockDishes.add(dish);
+  }
+
+  void updateDish(Dish updatedDish) {
+    final index = mockDishes.indexWhere((d) => d.id == updatedDish.id);
+    if (index != -1) {
+      mockDishes[index] = updatedDish;
+    }
+  }
+
+  void deleteDish(String dishId) {
+    mockDishes.removeWhere((d) => d.id == dishId);
+  }
+
+  void toggleDishAvailability(String dishId) {
+    final index = mockDishes.indexWhere((d) => d.id == dishId);
+    if (index != -1) {
+      mockDishes[index] = mockDishes[index].copyWith(available: !mockDishes[index].available);
+    }
+  }
+
+  void updateCookProfile(Cook updatedCook) {
+    final index = mockCooks.indexWhere((c) => c.id == updatedCook.id);
+    if (index != -1) {
+      mockCooks[index] = updatedCook;
+    }
+  }
+
+  void toggleCookAvailability(String cookId) {
+    final index = mockCooks.indexWhere((c) => c.id == cookId);
+    if (index != -1) {
+      mockCooks[index] = mockCooks[index].copyWith(isAvailable: !mockCooks[index].isAvailable);
+    }
+  }
+
+  double getCookRevenue(String cookId) {
+    return mockOrders
+        .where((o) => o.cookId == cookId && o.status != 'new')
+        .fold<double>(0, (sum, o) => sum + o.total);
+  }
+
+  int getCookOrderCount(String cookId) {
+    return mockOrders.where((o) => o.cookId == cookId).length;
   }
 }
 

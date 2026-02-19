@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/screens.dart';
+import '../models/models.dart';
 import 'navigators.dart';
 
 class AppRouter {
@@ -125,6 +126,37 @@ class AppRouter {
       case '/followed-cooks':
         return MaterialPageRoute(
           builder: (_) => const FollowedCooksScreen(),
+          settings: settings,
+        );
+
+      case '/cook-menu':
+        return MaterialPageRoute(
+          builder: (_) => const CookMenuScreen(),
+          settings: settings,
+        );
+
+      case '/cook-reviews':
+        return MaterialPageRoute(
+          builder: (_) => const CookReviewsScreen(),
+          settings: settings,
+        );
+
+      case '/edit-dish':
+        final dish = settings.arguments as Dish;
+        return MaterialPageRoute(
+          builder: (_) => EditDishScreen(dish: dish),
+          settings: settings,
+        );
+
+      case '/cook-orders':
+        return MaterialPageRoute(
+          builder: (_) => const CookOrdersScreen(),
+          settings: settings,
+        );
+
+      case '/cook-profile-edit':
+        return MaterialPageRoute(
+          builder: (_) => const CookProfileEditScreen(),
           settings: settings,
         );
 

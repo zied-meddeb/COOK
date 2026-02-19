@@ -40,6 +40,9 @@ class Order {
   final String cookId;
   final String cookName;
   final List<TimelineStep> timeline;
+  final String clientName;
+  final String clientId;
+  final DateTime? createdAt;
 
   const Order({
     required this.id,
@@ -55,7 +58,48 @@ class Order {
     required this.cookId,
     required this.cookName,
     required this.timeline,
+    this.clientName = '',
+    this.clientId = '',
+    this.createdAt,
   });
+
+  Order copyWith({
+    String? id,
+    String? status,
+    String? estimatedArrival,
+    int? eta,
+    List<OrderItem>? dishes,
+    double? total,
+    String? driverId,
+    String? driverName,
+    double? driverRating,
+    String? driverAvatar,
+    String? cookId,
+    String? cookName,
+    List<TimelineStep>? timeline,
+    String? clientName,
+    String? clientId,
+    DateTime? createdAt,
+  }) {
+    return Order(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      estimatedArrival: estimatedArrival ?? this.estimatedArrival,
+      eta: eta ?? this.eta,
+      dishes: dishes ?? this.dishes,
+      total: total ?? this.total,
+      driverId: driverId ?? this.driverId,
+      driverName: driverName ?? this.driverName,
+      driverRating: driverRating ?? this.driverRating,
+      driverAvatar: driverAvatar ?? this.driverAvatar,
+      cookId: cookId ?? this.cookId,
+      cookName: cookName ?? this.cookName,
+      timeline: timeline ?? this.timeline,
+      clientName: clientName ?? this.clientName,
+      clientId: clientId ?? this.clientId,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
 
 class Review {
