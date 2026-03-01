@@ -26,19 +26,22 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
 
   final List<Map<String, dynamic>> _banners = [
     {
-      'title': '🍽️ Découvrez les plats maison',
+      'title': 'Découvrez les plats maison',
       'subtitle': 'Cuisinés avec amour par nos chefs locaux',
       'gradient': [const Color(0xFFFF7A00), const Color(0xFFFF5500)],
+      'icon': Icons.restaurant_menu_rounded,
     },
     {
-      'title': '🚀 Livraison express',
+      'title': 'Livraison express',
       'subtitle': 'Recevez votre repas en moins de 30 min',
       'gradient': [const Color(0xFF2ECC71), const Color(0xFF27AE60)],
+      'icon': Icons.electric_bolt_rounded,
     },
     {
-      'title': '⭐ Nouveaux chefs cette semaine',
+      'title': 'Nouveaux chefs cette semaine',
       'subtitle': '-20% sur votre première commande',
       'gradient': [const Color(0xFF9B59B6), const Color(0xFF8E44AD)],
+      'icon': Icons.star_rounded,
     },
   ];
 
@@ -170,36 +173,37 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('📍', style: TextStyle(fontSize: 16)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(
-                    'Paris, France',
-                    style: AppTypography.bodySm.copyWith(
-                      color: colors.textSecondary,
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_rounded,
+                          size: 15, color: AppColors.primary),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(
+                        'Tunis, Tunisie',
+                        style: AppTypography.bodySm.copyWith(
+                          color: colors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        color: colors.textSecondary,
+                        size: 18,
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: AppSpacing.xs),
-                  Icon(
-                    Icons.keyboard_arrow_down,
-                    color: colors.textSecondary,
-                    size: 18,
+                  const SizedBox(height: 4),
+                  Text(
+                    'Bonjour, ${user?.name ?? 'Gourmet'} !',
+                    style: AppTypography.h2.copyWith(
+                      color: colors.textPrimary,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                'Bonjour, ${user?.name ?? 'Gourmet'} ! 👋',
-                style: AppTypography.h2.copyWith(
-                  color: colors.textPrimary,
-                ),
-              ),
-            ],
-          ),
           Row(
             children: [
               GestureDetector(
@@ -378,22 +382,38 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
-                // Banner dots indicator (vertical)
+                // Banner icon + dots
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(_banners.length, (index) {
-                    return Container(
-                      width: 8,
-                      height: index == _currentBannerIndex ? 20 : 8,
-                      margin: const EdgeInsets.only(bottom: 4),
+                  children: [
+                    Container(
+                      width: 48, height: 48,
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(
-                          alpha: index == _currentBannerIndex ? 1.0 : 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(AppBorderRadius.lg),
                       ),
-                    );
-                  }),
+                      child: Icon(
+                        (banner['icon'] as IconData?) ?? Icons.restaurant_menu_rounded,
+                        color: Colors.white, size: 24),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(_banners.length, (index) {
+                        return Container(
+                          width: index == _currentBannerIndex ? 16 : 6,
+                          height: 6,
+                          margin: const EdgeInsets.only(right: 3),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(
+                              alpha: index == _currentBannerIndex ? 1.0 : 0.5,
+                            ),
+                            borderRadius: BorderRadius.circular(AppBorderRadius.full),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -438,7 +458,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                     borderRadius: BorderRadius.circular(AppBorderRadius.lg),
                   ),
                   child: const Center(
-                    child: Text('🚴', style: TextStyle(fontSize: 24)),
+                    child: Icon(Icons.delivery_dining_rounded,
+                        size: 28, color: Colors.white),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -547,9 +568,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                           ],
                         ),
                         child: Center(
-                          child: Text(
-                            category.icon,
-                            style: const TextStyle(fontSize: 28),
+                          child: Icon(
+                            _categoryIcon(category.id),
+                            size: 28,
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
@@ -727,11 +749,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                             if (cook.verified)
                               const Padding(
                                 padding: EdgeInsets.only(left: 4),
-                                child: Text('✓', style: TextStyle(
-                                  color: AppColors.success,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                )),
+                                child: Icon(Icons.verified_rounded,
+                                    size: 14, color: AppColors.success),
                               ),
                           ],
                         ),
@@ -747,7 +766,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Text('⭐', style: TextStyle(fontSize: 14)),
+                            const Icon(Icons.star_rounded,
+                                size: 14, color: AppColors.warning),
                             const SizedBox(width: 4),
                             Text(
                               '${cook.rating}',
@@ -773,12 +793,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                                   color: AppColors.primaryLight,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Text(
-                                  '🔥 Top',
-                                  style: AppTypography.bodyXs.copyWith(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.local_fire_department_rounded,
+                                        size: 11, color: AppColors.primary),
+                                    const SizedBox(width: 3),
+                                    Text(
+                                      'Top',
+                                      style: AppTypography.bodyXs.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                           ],
@@ -850,7 +878,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                         ),
                         Row(
                           children: [
-                            const Text('⭐', style: TextStyle(fontSize: 12)),
+                            const Icon(Icons.star_rounded,
+                                size: 12, color: AppColors.warning),
                             const SizedBox(width: 2),
                             Text(
                               '${cook.rating}',
@@ -859,8 +888,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                               ),
                             ),
                             const SizedBox(width: AppSpacing.md),
+                            const Icon(Icons.location_on_rounded,
+                                size: 11, color: AppColors.primary),
+                            const SizedBox(width: 2),
                             Text(
-                              '📍 ${cook.distance} km',
+                              '${cook.distance} km',
                               style: AppTypography.bodyXs.copyWith(
                                 color: colors.textSecondary,
                               ),
@@ -942,6 +974,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
         );
       },
     );
+  }
+
+  IconData _categoryIcon(String id) {
+    switch (id) {
+      case 'salty': return Icons.set_meal_rounded;
+      case 'sweet': return Icons.cake_rounded;
+      case 'healthy': return Icons.eco_rounded;
+      case 'vegan': return Icons.spa_rounded;
+      case 'traditional': return Icons.rice_bowl_rounded;
+      case 'fusion': return Icons.auto_awesome_rounded;
+      case 'fast': return Icons.fastfood_rounded;
+      case 'soup': return Icons.soup_kitchen_rounded;
+      default: return Icons.restaurant_rounded;
+    }
   }
 
   Widget _buildLoadingShimmer(AppThemeColors colors, {double height = 260}) {

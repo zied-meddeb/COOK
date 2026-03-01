@@ -52,10 +52,7 @@ class _OrdersScreenState extends State<OrdersScreen>
       appBar: AppBar(
         backgroundColor: colors.card,
         elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: Icon(Icons.arrow_back, color: colors.textPrimary),
-        ),
+
         title: Text(
           'Mes Commandes',
           style: AppTypography.h3.copyWith(color: colors.textPrimary),
@@ -106,9 +103,10 @@ class _OrdersScreenState extends State<OrdersScreen>
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: Text(
-                  isActive ? '📦' : '📋',
-                  style: const TextStyle(fontSize: 40),
+                child: Icon(
+                  isActive ? Icons.receipt_long_rounded : Icons.history_rounded,
+                  size: 40,
+                  color: colors.textSecondary,
                 ),
               ),
             ),
@@ -195,20 +193,14 @@ class _OrderCard extends StatelessWidget {
     }
   }
 
-  String get _statusIcon {
+  IconData get _statusIconData {
     switch (order.status) {
-      case 'received':
-        return '📥';
-      case 'preparing':
-        return '👨‍🍳';
-      case 'ready':
-        return '✅';
-      case 'out_for_delivery':
-        return '🚴';
-      case 'delivered':
-        return '🎉';
-      default:
-        return '📦';
+      case 'received':       return Icons.inbox_rounded;
+      case 'preparing':      return Icons.hourglass_top_rounded;
+      case 'ready':          return Icons.check_circle_rounded;
+      case 'out_for_delivery': return Icons.delivery_dining_rounded;
+      case 'delivered':      return Icons.done_all_rounded;
+      default:               return Icons.receipt_long_rounded;
     }
   }
 
@@ -240,7 +232,14 @@ class _OrderCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(_statusIcon, style: const TextStyle(fontSize: 20)),
+                    Container(
+                      width: 34, height: 34,
+                      decoration: BoxDecoration(
+                        color: _statusColor.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(AppBorderRadius.md),
+                      ),
+                      child: Icon(_statusIconData, size: 17, color: _statusColor),
+                    ),
                     const SizedBox(width: AppSpacing.sm),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -282,7 +281,8 @@ class _OrderCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppBorderRadius.md),
                   ),
                   child: const Center(
-                    child: Text('👨‍🍳', style: TextStyle(fontSize: 20)),
+                    child: Icon(Icons.restaurant_rounded,
+                        size: 22, color: AppColors.primary),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -354,7 +354,7 @@ class _OrderCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${(dish.price * dish.quantity).toStringAsFixed(2)}€',
+                          '${(dish.price * dish.quantity).toStringAsFixed(2)} DT',
                           style: AppTypography.bodySm.copyWith(
                             color: colors.textSecondary,
                           ),
@@ -379,7 +379,7 @@ class _OrderCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${order.total.toStringAsFixed(2)}€',
+                  '${order.total.toStringAsFixed(2)} DT',
                   style: AppTypography.bodyLg.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w700,

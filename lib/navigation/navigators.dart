@@ -95,7 +95,7 @@ class _ClientNavigatorState extends State<ClientNavigator> {
               backgroundColor: AppColors.primary,
               icon: const Icon(Icons.shopping_cart, color: Colors.white),
               label: Text(
-                '${appProvider.cart.items.length} • ${appProvider.cart.total.toStringAsFixed(2)}€',
+                '${appProvider.cart.items.length} • ${appProvider.cart.total.toStringAsFixed(2)} DT',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -198,33 +198,41 @@ class _CookNavigatorState extends State<CookNavigator> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: colors.card,
-          border: Border(
-            top: BorderSide(color: colors.border),
-          ),
+          border: Border(top: BorderSide(color: colors.border)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
         ),
         child: SafeArea(
           child: SizedBox(
-            height: 60,
+            height: 65,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildNavItem(
-                  icon: '📊',
+                  icon: Icons.dashboard_outlined,
+                  activeIcon: Icons.dashboard_rounded,
                   label: 'Dashboard',
                   isSelected: _currentIndex == 0,
                   onTap: () => setState(() => _currentIndex = 0),
                   colors: colors,
                 ),
                 _buildNavItem(
-                  icon: '📦',
-                  label: 'Orders',
+                  icon: Icons.receipt_long_outlined,
+                  activeIcon: Icons.receipt_long_rounded,
+                  label: 'Commandes',
                   isSelected: _currentIndex == 1,
                   onTap: () => setState(() => _currentIndex = 1),
                   colors: colors,
                 ),
                 _buildNavItem(
-                  icon: '👤',
-                  label: 'Profile',
+                  icon: Icons.person_outline_rounded,
+                  activeIcon: Icons.person_rounded,
+                  label: 'Profil',
                   isSelected: _currentIndex == 2,
                   onTap: () => setState(() => _currentIndex = 2),
                   colors: colors,
@@ -238,7 +246,8 @@ class _CookNavigatorState extends State<CookNavigator> {
   }
 
   Widget _buildNavItem({
-    required String icon,
+    required IconData icon,
+    required IconData activeIcon,
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
@@ -252,19 +261,17 @@ class _CookNavigatorState extends State<CookNavigator> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              icon,
-              style: TextStyle(
-                fontSize: 20,
-                color: isSelected ? AppColors.primary : colors.textSecondary,
-              ),
+            Icon(
+              isSelected ? activeIcon : icon,
+              size: 24,
+              color: isSelected ? AppColors.primary : colors.textSecondary,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight: FontWeight.w600,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color: isSelected ? AppColors.primary : colors.textSecondary,
               ),
             ),

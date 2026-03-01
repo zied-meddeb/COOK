@@ -22,12 +22,24 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
+  final List<Map<String, dynamic>> _categoryItems = [
+    {'id': 'all',         'name': 'Tous',         'icon': Icons.restaurant_rounded},
+    {'id': 'salty',       'name': 'Salé',         'icon': Icons.set_meal_rounded},
+    {'id': 'sweet',       'name': 'Sucré',        'icon': Icons.cake_rounded},
+    {'id': 'healthy',     'name': 'Healthy',      'icon': Icons.eco_rounded},
+    {'id': 'vegan',       'name': 'Vegan',        'icon': Icons.spa_rounded},
+    {'id': 'traditional', 'name': 'Traditionnel', 'icon': Icons.rice_bowl_rounded},
+    {'id': 'fusion',      'name': 'Fusion',       'icon': Icons.auto_awesome_rounded},
+    {'id': 'fast',        'name': 'Rapide',       'icon': Icons.fastfood_rounded},
+    {'id': 'soup',        'name': 'Soupes',       'icon': Icons.soup_kitchen_rounded},
+  ];
+
   final List<Map<String, dynamic>> _sortOptions = [
-    {'id': 'popular', 'label': 'Populaire', 'icon': '🔥'},
-    {'id': 'rating', 'label': 'Mieux notés', 'icon': '⭐'},
-    {'id': 'price_low', 'label': 'Prix croissant', 'icon': '💰'},
-    {'id': 'price_high', 'label': 'Prix décroissant', 'icon': '💎'},
-    {'id': 'distance', 'label': 'Distance', 'icon': '📍'},
+    {'id': 'popular',    'label': 'Populaire',       'icon': Icons.local_fire_department_rounded},
+    {'id': 'rating',     'label': 'Mieux notés',     'icon': Icons.star_rounded},
+    {'id': 'price_low',  'label': 'Prix croissant',  'icon': Icons.arrow_upward_rounded},
+    {'id': 'price_high', 'label': 'Prix décroissant','icon': Icons.arrow_downward_rounded},
+    {'id': 'distance',   'label': 'Distance',        'icon': Icons.location_on_rounded},
   ];
 
   List<Dish> get _filteredDishes {
@@ -349,9 +361,10 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        option['icon'] as String,
-                        style: const TextStyle(fontSize: 14),
+                      Icon(
+                        option['icon'] as IconData,
+                        size: 14,
+                        color: isSelected ? Colors.white : colors.textPrimary,
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(
@@ -373,19 +386,14 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
   }
 
   Widget _buildCategoriesChips(AppThemeColors colors) {
-    final categories = [
-      {'id': 'all', 'name': 'Tous', 'icon': '🍽️'},
-      ...FoodCategory.categories.map((c) => {'id': c.id, 'name': c.name, 'icon': c.icon}),
-    ];
-
     return SizedBox(
       height: 50,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-        itemCount: categories.length,
+        itemCount: _categoryItems.length,
         itemBuilder: (context, index) {
-          final category = categories[index];
+          final category = _categoryItems[index];
           final isSelected = _selectedCategory == category['id'];
           return GestureDetector(
             onTap: () {
@@ -404,7 +412,11 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
               ),
               child: Row(
                 children: [
-                  Text(category['icon'] as String, style: const TextStyle(fontSize: 16)),
+                  Icon(
+                    category['icon'] as IconData,
+                    size: 15,
+                    color: isSelected ? Colors.white : colors.textSecondary,
+                  ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     category['name'] as String,
@@ -426,7 +438,7 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
     final dishes = _filteredDishes;
 
     if (dishes.isEmpty) {
-      return _buildEmptyState(colors, 'Aucun plat trouvé', '🍽️');
+      return _buildEmptyState(colors, 'Aucun plat trouvé', Icons.restaurant_menu_rounded);
     }
 
     return LayoutBuilder(
@@ -468,7 +480,7 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
     final cooks = _filteredCooks;
 
     if (cooks.isEmpty) {
-      return _buildEmptyState(colors, 'Aucun chef trouvé', '👨‍🍳');
+      return _buildEmptyState(colors, 'Aucun chef trouvé', Icons.person_rounded);
     }
 
     return ListView.builder(
@@ -572,7 +584,7 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
                   const SizedBox(height: AppSpacing.sm),
                   Row(
                     children: [
-                      const Text('⭐', style: TextStyle(fontSize: 14)),
+                      const Icon(Icons.star_rounded, size: 14, color: AppColors.warning),
                       const SizedBox(width: 4),
                       Text(
                         '${cook.rating}',
@@ -588,7 +600,7 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
                         ),
                       ),
                       const SizedBox(width: AppSpacing.md),
-                      const Text('📍', style: TextStyle(fontSize: 12)),
+                      const Icon(Icons.location_on_rounded, size: 12, color: AppColors.primary),
                       Text(
                         ' ${cook.distance} km',
                         style: AppTypography.bodySm.copyWith(
@@ -638,12 +650,19 @@ class _ExploreScreenState extends State<ExploreScreen> with SingleTickerProvider
     );
   }
 
-  Widget _buildEmptyState(AppThemeColors colors, String message, String emoji) {
+  Widget _buildEmptyState(AppThemeColors colors, String message, IconData icon) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 64)),
+          Container(
+            width: 72, height: 72,
+            decoration: BoxDecoration(
+              color: colors.border.withValues(alpha: 0.4),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 34, color: colors.textSecondary),
+          ),
           const SizedBox(height: AppSpacing.lg),
           Text(
             message,

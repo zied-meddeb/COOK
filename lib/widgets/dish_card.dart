@@ -221,10 +221,8 @@ class _DishCardState extends State<DishCard> with SingleTickerProviderStateMixin
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Text(
-                                  '⭐',
-                                  style: TextStyle(fontSize: 10),
-                                ),
+                                const Icon(Icons.star_rounded,
+                                    size: 11, color: AppColors.warning),
                                 const SizedBox(width: 2),
                                 Text(
                                   widget.rating.toString(),
@@ -269,7 +267,7 @@ class _DishCardState extends State<DishCard> with SingleTickerProviderStateMixin
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${widget.price.toStringAsFixed(2)}€',
+                                    '${widget.price.toStringAsFixed(2)} DT',
                                     style: (isCompact ? AppTypography.bodyMd : AppTypography.bodyLg).copyWith(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.w700,

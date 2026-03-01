@@ -137,12 +137,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   color: AppColors.primaryLight,
                                   borderRadius: BorderRadius.circular(AppBorderRadius.xl),
                                 ),
-                                child: Text(
-                                  user?.role == UserRole.cook ? '👨‍🍳 Chef' : '🍽️ Client',
-                                  style: AppTypography.bodySm.copyWith(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      user?.role == UserRole.cook
+                                          ? Icons.restaurant_rounded
+                                          : Icons.person_rounded,
+                                      size: 13,
+                                      color: AppColors.primary,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      user?.role == UserRole.cook ? 'Chef' : 'Client',
+                                      style: AppTypography.bodySm.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -414,33 +427,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               children: [
                 Expanded(
                   child: _buildStatItem(
-                    '🛒',
+                    Icons.shopping_bag_rounded,
+                    AppColors.primary,
                     '24',
                     'Commandes',
                     colors,
                   ),
                 ),
-                Container(
-                  width: 1,
-                  height: 50,
-                  color: colors.border,
-                ),
+                Container(width: 1, height: 50, color: colors.border),
                 Expanded(
                   child: _buildStatItem(
-                    '⭐',
+                    Icons.star_rounded,
+                    AppColors.warning,
                     '4.8',
                     'Note moyenne',
                     colors,
                   ),
                 ),
-                Container(
-                  width: 1,
-                  height: 50,
-                  color: colors.border,
-                ),
+                Container(width: 1, height: 50, color: colors.border),
                 Expanded(
                   child: _buildStatItem(
-                    '❤️',
+                    Icons.favorite_rounded,
+                    AppColors.error,
                     '12',
                     'Favoris',
                     colors,
@@ -455,14 +463,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Widget _buildStatItem(
-    String emoji,
+    IconData icon,
+    Color iconColor,
     String value,
     String label,
     AppThemeColors colors,
   ) {
     return Column(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 24)),
+        Container(
+          width: 36, height: 36,
+          decoration: BoxDecoration(
+            color: iconColor.withValues(alpha: 0.12),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, size: 18, color: iconColor),
+        ),
         const SizedBox(height: AppSpacing.xs),
         Text(
           value,
@@ -506,35 +522,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     color: AppColors.secondary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppBorderRadius.md),
                   ),
-                  child: const Text('🔄', style: TextStyle(fontSize: 20)),
+                  child: const Icon(Icons.swap_horiz_rounded, size: 22, color: AppColors.secondary),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Changer de mode',
+                      Text('Changer de mode',
                         style: AppTypography.bodyLg.copyWith(
-                          color: colors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                          color: colors.textPrimary, fontWeight: FontWeight.w700)),
                       Text(
-                        isClient
-                            ? 'Devenez chef et vendez vos plats'
-                            : 'Passez en mode client',
-                        style: AppTypography.bodySm.copyWith(
-                          color: colors.textSecondary,
-                        ),
-                      ),
+                        isClient ? 'Devenez chef et vendez vos plats' : 'Passez en mode client',
+                        style: AppTypography.bodySm.copyWith(color: colors.textSecondary)),
                     ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
-            // Role Toggle
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
@@ -548,10 +554,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       onTap: () {
                         if (user != null && user.role != UserRole.client) {
                           appProvider.setUser(user.copyWith(role: UserRole.client));
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/client',
-                            (route) => false,
-                          );
+                          Navigator.of(context).pushNamedAndRemoveUntil('/client', (r) => false);
                         }
                       },
                       child: AnimatedContainer(
@@ -564,18 +567,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              '🍽️',
-                              style: TextStyle(fontSize: isClient ? 18 : 16),
-                            ),
+                            Icon(Icons.person_rounded,
+                              size: isClient ? 18 : 16,
+                              color: isClient ? Colors.white : colors.textSecondary),
                             const SizedBox(width: AppSpacing.sm),
-                            Text(
-                              'Client',
+                            Text('Client',
                               style: AppTypography.bodyMd.copyWith(
                                 color: isClient ? Colors.white : colors.textSecondary,
-                                fontWeight: isClient ? FontWeight.w700 : FontWeight.w500,
-                              ),
-                            ),
+                                fontWeight: isClient ? FontWeight.w700 : FontWeight.w500)),
                           ],
                         ),
                       ),
@@ -586,10 +585,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       onTap: () {
                         if (user != null && user.role != UserRole.cook) {
                           appProvider.setUser(user.copyWith(role: UserRole.cook));
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/cook',
-                            (route) => false,
-                          );
+                          Navigator.of(context).pushNamedAndRemoveUntil('/cook', (r) => false);
                         }
                       },
                       child: AnimatedContainer(
@@ -602,18 +598,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              '👨‍🍳',
-                              style: TextStyle(fontSize: !isClient ? 18 : 16),
-                            ),
+                            Icon(Icons.restaurant_rounded,
+                              size: !isClient ? 18 : 16,
+                              color: !isClient ? Colors.white : colors.textSecondary),
                             const SizedBox(width: AppSpacing.sm),
-                            Text(
-                              'Chef',
+                            Text('Chef',
                               style: AppTypography.bodyMd.copyWith(
                                 color: !isClient ? Colors.white : colors.textSecondary,
-                                fontWeight: !isClient ? FontWeight.w700 : FontWeight.w500,
-                              ),
-                            ),
+                                fontWeight: !isClient ? FontWeight.w700 : FontWeight.w500)),
                           ],
                         ),
                       ),
@@ -664,21 +656,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
             _buildThemeOption(
-              '☀️',
+              Icons.light_mode_rounded,
               'Clair',
               AppThemeMode.light,
               themeProvider,
               colors,
             ),
             _buildThemeOption(
-              '🌙',
+              Icons.dark_mode_rounded,
               'Sombre',
               AppThemeMode.dark,
               themeProvider,
               colors,
             ),
             _buildThemeOption(
-              '📱',
+              Icons.phone_android_rounded,
               'Système',
               AppThemeMode.system,
               themeProvider,
@@ -692,7 +684,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Widget _buildThemeOption(
-    String icon,
+    IconData icon,
     String label,
     AppThemeMode mode,
     ThemeProvider themeProvider,
@@ -708,7 +700,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         child: Row(
           children: [
-            Text(icon, style: const TextStyle(fontSize: 24)),
+            Container(
+              width: 38, height: 38,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.primary.withValues(alpha: 0.12)
+                    : colors.border.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(AppBorderRadius.md),
+              ),
+              child: Icon(icon,
+                size: 18,
+                color: isSelected ? AppColors.primary : colors.textSecondary),
+            ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Text(
@@ -720,7 +723,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             if (isSelected)
-              const Icon(Icons.check_circle, color: AppColors.primary, size: 24),
+              const Icon(Icons.check_circle_rounded,
+                  color: AppColors.primary, size: 22),
           ],
         ),
       ),
